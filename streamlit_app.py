@@ -1,5 +1,9 @@
 
 import streamlit as st
+import pandas as pd
+import folium
+
+
 st.set_page_config(page_title="문서 작성 예제", layout="centered")
 
 # 제목
@@ -37,8 +41,6 @@ st.image("https://i.namu.wiki/i/4El7Omx8MUNbvgPh06rSi50cTR5HI9QF3x8KuRAibfxEj6z-
 
 
 
-import pandas as pd
-import folium
 
 # CSV 파일 경로
 file_path = '/mnt/data/18cf1d31-cf32-40a4-b495-28c4ebcbd638.csv'
