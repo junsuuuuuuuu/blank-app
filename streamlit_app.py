@@ -1,22 +1,32 @@
+import streamlit as st
 import pandas as pd
 import folium
-import streamlit as st
 from streamlit_folium import st_folium
 
-st.title("진주시 CCTV 지도")
+st.title("진주시 CCTV 위치 지도")
 
-# CSV 파일 읽기 (인코딩 주의)
-df = pd.read_csv("jinju_cctv.csv", encoding='cp949')
+# 서버에 이미 파일이 있다고 가정
+csv_file = "경상남도 진주시_CCTV위치정보_20250501.csv"
 
-# 지도 생성 (진주시 중심)
-m = folium.Map(location=[35.1802, 128.1076], zoom_start=13)
+# 파일 읽기
+try:
+    df = pd.read_csv(csv_file, encoding="cp949")
+except UnicodeDecodeError:
+    df = pd.read_csv(csv_file, encoding="utf-8")
 
-# CSV 파일에서 위도, 경도, 설치장소를 기반으로 마커 표시
-for _, row in df.iterrows():
+st.write("CCTV 데이터 미리보기", df.head())
+
+# 지도 기준점(진주시청 근처)
+center_lat, center_lon = 35.1802, 128.1076
+m = folium.Map(location=[center_lat, center_lon], zoom_start=13)
+
+# CCTV 위치 마커 추가
+for idx, row in df.iterrows():
     folium.Marker(
-        location=[row['위도'], row['경도']],     # 열 이름이 실제와 다르면 오류나니까 정확히 확인!
-        popup=row.get('설치장소', 'CCTV')       # 설치장소 없으면 기본값 'CCTV'
+        location=[row['위도'], row['경도']],
+        popup=f"목적: {row['목적']}<br>장소: {row['설치장소']}<br>대수: {row['설치대수']}",
+        icon=folium.Icon(color='red', icon='camera')
     ).add_to(m)
 
-# Streamlit 앱에 folium 지도 보여주기
+# folium 지도 표시
 st_folium(m, width=700, height=500)
