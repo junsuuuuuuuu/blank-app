@@ -6,7 +6,7 @@ from streamlit_folium import st_folium
 st.title("진주시 CCTV 위치 지도")
 
 # 서버에 이미 파일이 있다고 가정
-csv_file = "경상남도 진주시_CCTV위치정보_20250501.csv"
+csv_file = "jinju_cctv.csv"
 
 # 파일 읽기
 try:
