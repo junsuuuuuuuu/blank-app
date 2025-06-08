@@ -7,7 +7,7 @@ import folium
 st.set_page_config(page_title="문서 작성 예제", layout="centered")
 
 # 제목
-st.title("안녕 난 준수")
+st.title("안녕 난 준수ㅎㅎ")
 
 # 섹션
 st.header("1. 기본 텍스트 출력")
