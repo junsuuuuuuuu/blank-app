@@ -35,3 +35,30 @@ st.header("3. 이미지 출력")
 
 st.image("https://i.namu.wiki/i/4El7Omx8MUNbvgPh06rSi50cTR5HI9QF3x8KuRAibfxEj6z-3Yqo19bi7pFUwyo73MaFIyibjmyibkq3Z8yzuXfFpPZ4siVz_OjZhEsyDmlSc6sb4Bq5OFsqW28zfqBWKgg5pVqwTIt4tcB6vjVR_Q.webp", width=300)
 
+
+
+import pandas as pd
+import folium
+
+# CSV 파일 경로
+file_path = '/mnt/data/18cf1d31-cf32-40a4-b495-28c4ebcbd638.csv'
+
+# CSV 파일 불러오기
+df = pd.read_csv(file_path)
+
+# 위도, 경도 컬럼명 확인 (예시로 '위도', '경도'라고 가정함. 다르면 수정 필요)
+print(df.columns)  # 컬럼 확인용
+
+# 지도의 중심 설정 (진주시청 기준)
+map_center = [35.1802, 128.1076]
+m = folium.Map(location=map_center, zoom_start=13)
+
+# CCTV 위치 마커로 추가
+for idx, row in df.iterrows():
+    lat = row['위도']  # 컬럼명 확인 후 수정
+    lon = row['경도']
+    name = row.get('설치장소', 'CCTV')  # 설치장소 컬럼명도 다를 수 있음
+    folium.Marker([lat, lon], popup=name).add_to(m)
+
+# 지도 저장
+m.save('jinju_cctv_map.html')
